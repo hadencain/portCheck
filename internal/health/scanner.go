@@ -38,7 +38,7 @@ var commonDevPorts = map[uint32]string{
 
 // Scan analyses a snapshot of listening ports and returns findings.
 func Scan(entries []ports.PortEntry) []Finding {
-	var findings []Finding
+	findings := []Finding{}
 	portCount := make(map[uint32]int)
 
 	for _, e := range entries {
