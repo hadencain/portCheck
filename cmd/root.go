@@ -3,8 +3,12 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"sort"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"portwatch/internal/display"
+	"portwatch/internal/ports"
 )
 
 var rootCmd = &cobra.Command{
@@ -27,6 +31,15 @@ func Execute() {
 }
 
 func runList(_ *cobra.Command, _ []string) error {
-	fmt.Println("PortWatch — listing ports (not yet implemented)")
+	entries, err := ports.ListeningPorts()
+	if err != nil {
+		return fmt.Errorf("listing ports: %w", err)
+	}
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].Port < entries[j].Port
+	})
+
+	color.New(color.FgCyan, color.Bold).Printf("\n  PortWatch — %d listening port(s)\n\n", len(entries))
+	display.RenderPortTable(entries)
 	return nil
 }
