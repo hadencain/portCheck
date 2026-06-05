@@ -21,7 +21,9 @@ func init() {
 }
 
 func runWatch(_ *cobra.Command, _ []string) error {
-	color.New(color.FgCyan, color.Bold).Println("\n  PortWatch — watch mode (Ctrl+C to exit)\n")
+	fmt.Println()
+	color.New(color.FgCyan, color.Bold).Print("  PortWatch — watch mode (Ctrl+C to exit)")
+	fmt.Println()
 
 	prev := make(map[string]bool)
 	ticker := time.NewTicker(2 * time.Second)

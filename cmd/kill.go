@@ -38,7 +38,8 @@ func runKill(_ *cobra.Command, args []string) error {
 		line, _ := reader.ReadString('\n')
 		line = strings.TrimSpace(strings.ToLower(line))
 		if line != "y" && line != "yes" {
-			display.ColorMuted.Println("  Aborted.\n")
+			display.ColorMuted.Print("  Aborted.")
+				fmt.Println()
 			return nil
 		}
 	}

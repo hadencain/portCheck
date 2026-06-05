@@ -51,7 +51,9 @@ func runScan(_ *cobra.Command, _ []string) error {
 	display.RenderPortTable(entries)
 
 	if len(findings) == 0 {
-		display.ColorSuccess.Println("\n  No issues detected.\n")
+		fmt.Println()
+		display.ColorSuccess.Print("  No issues detected.")
+		fmt.Println()
 		return nil
 	}
 

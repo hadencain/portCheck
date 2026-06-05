@@ -49,7 +49,9 @@ func runDev(_ *cobra.Command, _ []string) error {
 	})
 
 	if len(devEntries) == 0 {
-		display.ColorMuted.Println("\n  No development servers detected.\n")
+		fmt.Println()
+		display.ColorMuted.Print("  No development servers detected.")
+		fmt.Println()
 		return nil
 	}
 
