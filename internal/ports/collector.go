@@ -8,6 +8,11 @@ import (
 	"github.com/shirou/gopsutil/v3/process"
 )
 
+const (
+	sockTCP = uint32(1)
+	sockUDP = uint32(2)
+)
+
 // ListeningPorts returns all TCP/UDP connections in LISTEN state.
 func ListeningPorts() ([]PortEntry, error) {
 	conns, err := net.Connections("inet")
@@ -17,11 +22,8 @@ func ListeningPorts() ([]PortEntry, error) {
 
 	var entries []PortEntry
 	for _, c := range conns {
-		if c.Status != "LISTEN" && c.Status != "" {
-			// UDP has no status; include those too
-			if c.Type != 2 { // 2 = SOCK_DGRAM (UDP)
-				continue
-			}
+		if c.Status != "LISTEN" && c.Type != sockUDP {
+			continue
 		}
 		name := processName(c.Pid)
 		entries = append(entries, PortEntry{
@@ -39,9 +41,12 @@ func ListeningPorts() ([]PortEntry, error) {
 // GetPortDetail returns the ProcessDetail for the process listening on port.
 // Returns an error if no process is found on that port.
 func GetPortDetail(port uint32) (*ProcessDetail, error) {
+	if port > 65535 {
+		return nil, fmt.Errorf("invalid port: %d", port)
+	}
 	entries, err := ListeningPorts()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("getting port detail: %w", err)
 	}
 	for _, e := range entries {
 		if e.Port == port {
@@ -109,9 +114,9 @@ func processDetail(pid int32, all []PortEntry) (*ProcessDetail, error) {
 
 func protoName(sockType uint32) string {
 	switch sockType {
-	case 1:
+	case sockTCP:
 		return "TCP"
-	case 2:
+	case sockUDP:
 		return "UDP"
 	default:
 		return "?"
