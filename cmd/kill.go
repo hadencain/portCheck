@@ -45,6 +45,7 @@ func runKill(_ *cobra.Command, args []string) error {
 
 	p, err := os.FindProcess(pid)
 	if err != nil {
+		// On Windows, FindProcess never errors; this path exists for cross-platform compatibility.
 		return fmt.Errorf("cannot find process %d: %w", pid, err)
 	}
 	if err := p.Kill(); err != nil {
