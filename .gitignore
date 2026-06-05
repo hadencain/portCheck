@@ -1,3 +1,4 @@
 portwatch.exe
 *.exe
 /scratch/
+/.worktrees/
