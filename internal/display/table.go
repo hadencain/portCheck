@@ -60,6 +60,9 @@ func RenderDetailBlock(w io.Writer, d *ports.ProcessDetail, hint string) {
 	if w == nil {
 		w = os.Stdout
 	}
+	if d == nil {
+		return
+	}
 	fmt.Fprintln(w)
 	ColorHeader.Fprintf(w, "  Process: %s (PID %d)\n", d.Name, d.PID)
 	fmt.Fprintf(w, "  Path:     %s\n", d.ExePath)
