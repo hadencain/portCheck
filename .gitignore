@@ -2,3 +2,8 @@ portwatch.exe
 *.exe
 /scratch/
 /.worktrees/
+CLAUDE.md
+.claude/
+.superpowers/
+docs/superpowers/
+scratch/
